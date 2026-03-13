@@ -1,6 +1,10 @@
 # Backend Services
 
-- `environment/`: manages lifecycle and metadata of environments.
-- `pipeline/`: tracks CI/CD executions and stage transitions.
-- `test-automation/`: orchestrates test runs (Playwright, Cypress, k6).
-- `ai-quality/`: computes risk score based on release quality metrics.
+Service boundaries and responsibilities:
+
+- `environment/`: lifecycle and metadata of DEV/QA/UAT/PROD/PREVIEW environments
+- `pipeline/`: CI/CD execution and stage transitions
+- `test-automation/`: orchestrates and ingests Playwright/Cypress/k6 runs
+- `ai-quality/`: computes release risk and quality gate decisions
+
+The current backend API exposes these domains through dedicated routes.

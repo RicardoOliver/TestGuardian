@@ -1,0 +1,10 @@
+{
+  "title": "QAOps Overview",
+  "schemaVersion": 39,
+  "panels": [
+    { "title": "Test Pass Rate", "type": "stat" },
+    { "title": "Automation Coverage", "type": "stat" },
+    { "title": "Defect Density", "type": "stat" },
+    { "title": "Build Stability", "type": "stat" }
+  ]
+}
