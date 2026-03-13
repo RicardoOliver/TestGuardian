@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qaops-backend
+  labels:
+    app: qaops-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qaops-backend
+  template:
+    metadata:
+      labels:
+        app: qaops-backend
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/example/qaops-backend:latest
+          ports:
+            - containerPort: 4000
+          env:
+            - name: NODE_ENV
+              value: "production"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qaops-backend
+spec:
+  selector:
+    app: qaops-backend
+  ports:
+    - port: 80
+      targetPort: 4000
