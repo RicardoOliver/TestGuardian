@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qaops-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qaops-postgres
+  template:
+    metadata:
+      labels:
+        app: qaops-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: qaops
+            - name: POSTGRES_USER
+              value: qaops
+            - name: POSTGRES_PASSWORD
+              value: qaops
+          ports:
+            - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qaops-postgres
+spec:
+  selector:
+    app: qaops-postgres
+  ports:
+    - port: 5432
+      targetPort: 5432

@@ -8,8 +8,6 @@ The platform simulates how modern engineering teams manage environments, pipelin
 
 ## Architecture Overview
 
-The platform follows a **cloud-native microservices architecture** designed to support scalable CI/CD pipelines and automated quality analysis.
-
 ```text
 Users
    │
@@ -17,10 +15,10 @@ Users
 Frontend Dashboard (Next.js)
    │
    ▼
-API Gateway
+API Gateway (Nginx)
    │
    ▼
-Backend Services
+Backend Services (Node.js/Express)
    │
    ├ Environment Service
    ├ Pipeline Service
@@ -42,8 +40,6 @@ Observability Stack
 
 ## Environments
 
-The platform supports multiple environments following a modern delivery workflow.
-
 | Environment | Purpose                          | Stability | Data                       |
 | ----------- | -------------------------------- | --------- | -------------------------- |
 | DEV         | Development and experimentation  | Low       | Mock data                  |
@@ -61,67 +57,25 @@ DEV → QA → UAT → PRODUCTION
 
 ## Preview Environments
 
-The platform automatically creates **temporary environments for Pull Requests**.
+Preview environments follow `preview-pr-<number>` and are provisioned/destroyed by API endpoints:
 
-Example:
-
-```text
-preview-pr-101
-preview-pr-102
-preview-pr-103
-```
-
-Workflow:
-
-```text
-Pull Request
-      │
-      ▼
-CI/CD Pipeline
-      │
-      ▼
-Create Kubernetes Namespace
-      │
-      ▼
-Deploy Application
-      │
-      ▼
-Run Automated Tests
-      │
-      ▼
-QA Validation
-```
-
-Preview environments are destroyed automatically when the Pull Request is closed.
+- `POST /api/preview/:prNumber/provision`
+- `DELETE /api/preview/:prNumber`
 
 ---
 
-## Core Features
+## Core Features (implemented)
 
 - Environment management
-- Automated testing
+- Automated testing ingestion
 - CI/CD pipeline monitoring
 - Release risk analysis
 - Preview environments
-- Observability dashboards
+- Observability quick links and dashboards
 
 ---
 
 ## Quality Intelligence
-
-The platform includes an **AI-based quality analysis module** that evaluates release risk based on test metrics.
-
-Example output:
-
-```text
-Release Version: 1.2.0
-
-Test Pass Rate: 91%
-Coverage: 82%
-Failed Tests: 3
-
-Release Risk Score: MEDIUM
-```
 
 Risk classification:
 
@@ -132,11 +86,26 @@ HIGH
 CRITICAL
 ```
 
+Main endpoint:
+
+- `POST /api/quality/risk`
+
+Input metrics:
+- Pass rate
+- Coverage
+- Failed tests
+- Build stability
+
+Output:
+- Risk level
+- Numeric score
+- Explainable reasons
+
 ---
 
 ## Metrics Dashboard
 
-Key metrics displayed:
+Frontend dashboard and API expose:
 
 - Test Pass Rate
 - Automation Coverage
@@ -149,34 +118,29 @@ Key metrics displayed:
 ## Tech Stack
 
 ### Frontend
-
 - Next.js
 - TailwindCSS
 
 ### Backend
-
 - Node.js
 - Express
 
 ### Testing
-
 - Playwright
 - Cypress
 - k6
+- Node test runner
 
 ### Infrastructure
-
-- Docker
+- Docker / Docker Compose
 - Kubernetes
 - Terraform
 
 ### CI/CD
-
 - GitHub Actions
 - ArgoCD
 
 ### Observability
-
 - Prometheus
 - Grafana
 - Loki
@@ -187,11 +151,14 @@ Key metrics displayed:
 ## Repository Structure
 
 ```text
-qaops-platform/
+TestGuardian/
 ├── backend/
 ├── frontend/
 ├── services/
 ├── tests/
+│   ├── e2e/
+│   ├── component/
+│   └── load/
 ├── docker/
 ├── k8s/
 ├── terraform/
@@ -210,10 +177,9 @@ qaops-platform/
 
 ### Prerequisites
 
-- Docker
-- Kubernetes
-- kubectl
-- Node.js
+- Docker + Docker Compose
+- Kubernetes + kubectl (for cluster deployment)
+- Node.js 20+
 
 ### Start Development Environment
 
@@ -238,107 +204,3 @@ make deploy
 ```bash
 make prod
 ```
-
----
-
-## CI/CD Pipeline
-
-Pipeline flow:
-
-```text
-Developer Commit
-       │
-       ▼
-Build
-       │
-       ▼
-Unit Tests
-       │
-       ▼
-Security Scan
-       │
-       ▼
-Build Docker Image
-       │
-       ▼
-Push Container Registry
-       │
-       ▼
-Deploy DEV
-       │
-       ▼
-Automated Tests
-       │
-       ▼
-Deploy QA
-       │
-       ▼
-Performance Tests
-       │
-       ▼
-Deploy UAT
-       │
-       ▼
-Manual Approval
-       │
-       ▼
-Deploy Production
-```
-
----
-
-## Observability
-
-Monitoring stack:
-
-```text
-Application
-   │
-   ▼
-Metrics
-   │
-   ▼
-Prometheus
-   │
-   ▼
-Grafana Dashboards
-```
-
-Logs and tracing:
-
-- Loki
-- Jaeger
-
----
-
-## Future Improvements
-
-- AI-powered test failure analysis
-- Automatic regression detection
-- Intelligent release risk prediction
-- Multi-tenant SaaS architecture
-
----
-
-## License
-
-MIT License
-
----
-
-## Author
-
-Ricardo Oliveira  
-QA Engineer | DevOps Enthusiast | Software Quality Advocate
-
-
-## Resolução de conflitos de PR
-
-Se um PR ficar bloqueado por conflitos com `main`, use:
-
-```bash
-./scripts/resolve-pr-conflicts.sh main
-```
-
-O script tenta fazer o merge da base e aplica resolução automática nos arquivos mais recorrentes do projeto; se restarem conflitos, ele lista os arquivos para ajuste manual.
-

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[prod] Deploying production release with manual approval gate..."
-echo "argocd app sync qaops-platform-prod"
+echo "[prod] Syncing production app via ArgoCD..."
+argocd app sync qaops-platform-prod
+argocd app wait qaops-platform-prod --health --timeout 600

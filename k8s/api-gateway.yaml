@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qaops-api-gateway
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qaops-api-gateway
+  template:
+    metadata:
+      labels:
+        app: qaops-api-gateway
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: gateway-config
+              mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: gateway-config
+          configMap:
+            name: qaops-api-gateway-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qaops-api-gateway-config
+data:
+  default.conf: |
+    server {
+      listen 8080;
+      location / {
+        proxy_pass http://qaops-frontend;
+      }
+      location /api/ {
+        proxy_pass http://qaops-backend;
+      }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qaops-api-gateway
+spec:
+  selector:
+    app: qaops-api-gateway
+  ports:
+    - port: 80
+      targetPort: 8080

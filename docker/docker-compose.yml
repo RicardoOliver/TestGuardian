@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: qaops
+      POSTGRES_USER: qaops
+      POSTGRES_PASSWORD: qaops
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ../backend:/app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      PORT: 4000
+      DATABASE_URL: postgresql://qaops:qaops@postgres:5432/qaops
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+
+  frontend:
+    image: node:20
+    working_dir: /app
+    volumes:
+      - ../frontend:/app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://backend:4000
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    volumes:
+      - ../monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - ../monitoring/grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on:
+      - prometheus
+    ports:
+      - "3001:3000"
+
+  loki:
+    image: grafana/loki:3.1.0
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ../monitoring/loki/local-config.yaml:/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "16686:16686"
+      - "14268:14268"

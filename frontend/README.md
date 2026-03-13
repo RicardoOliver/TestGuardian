@@ -1,10 +1,20 @@
 # Frontend Dashboard (Next.js)
 
-This folder is reserved for the QAOps dashboard built with Next.js + TailwindCSS.
+Production-style dashboard implemented with **Next.js + TailwindCSS**.
 
-Planned modules:
-- Environment overview (DEV, QA, UAT, PROD)
-- Pipeline timeline and stage status
-- Preview environments for pull requests
-- Quality intelligence cards (risk, pass rate, coverage)
-- Observability quick links (Grafana, Loki, Jaeger)
+## Modules
+- Environment overview (DEV, QA, UAT, PROD and PREVIEW)
+- Pipeline timeline and stage status summary
+- Quality intelligence cards (risk, pass rate, coverage, stability)
+- Observability quick links (Grafana, Loki, Jaeger, Prometheus)
+
+## Run locally
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+By default it expects backend API at `http://localhost:4000`.
+Set `NEXT_PUBLIC_API_BASE_URL` to customize.
