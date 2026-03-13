@@ -1,9 +1,6 @@
-import MetricCard from "../components/MetricCard";
-import { getDashboardData } from "../lib/api";
+import MetricCard from "./MetricCard";
 
-export default async function DashboardPage() {
-  const { metrics, environments, pipelines, observability } = await getDashboardData();
-
+export default function DashboardPage({ metrics, environments, pipelines, observability }) {
   return (
     <main className="mx-auto max-w-7xl p-8">
       <header className="mb-8">
