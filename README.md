@@ -1,14 +1,25 @@
-# TestGuardian Platform
+# QAOps Platform
 
-Cloud-native platform for **QA Engineering, DevOps automation, and software quality monitoring**.
+Cloud-native platform for **QA Engineering, DevOps automation and software quality monitoring**.
 
-The platform simulates how modern engineering teams manage environments, pipelines, automated tests, and quality metrics across the software delivery lifecycle.
+## What is implemented
 
----
+This repository now contains a robust functional baseline with:
 
-## Architecture Overview
+- **Backend API (Node.js + Express)**
+  - Environment management (standard + preview environments)
+  - Pipeline monitoring endpoints
+  - Test automation run ingestion
+  - AI-style quality/risk analysis endpoints
+- **Frontend Dashboard (Next.js App Router)**
+  - Metrics cards and lifecycle view (DEV → QA → UAT → PROD)
+- **CI pipeline (GitHub Actions)**
+  - Backend tests + frontend production build
+- **Infrastructure scaffolding**
+  - Kubernetes deployment/service manifest
+  - Local scripts and Make targets
 
-The platform follows a **cloud-native microservices architecture** designed to support scalable CI/CD pipelines and automated quality analysis.
+## Architecture
 
 ```text
 Users
@@ -17,316 +28,78 @@ Users
 Frontend Dashboard (Next.js)
    │
    ▼
-API Gateway
+API Gateway (future)
    │
    ▼
-Backend Services
-   │
-   ├ Environment Service
-   ├ Pipeline Service
-   ├ Test Automation Service
-   └ AI Quality Service
-   │
-   ▼
-Database (PostgreSQL)
-   │
-   ▼
-Observability Stack
-   ├ Prometheus
-   ├ Grafana
-   ├ Loki
-   └ Jaeger
+Backend Services (Express API)
+   ├ Environment API
+   ├ Pipeline API
+   ├ Test Automation API
+   └ Quality Intelligence API
 ```
 
----
+## API Endpoints
 
-## Environments
+### Health
+- `GET /health`
 
-The platform supports multiple environments following a modern delivery workflow.
+### Environments
+- `GET /api/environments`
+- `GET /api/environments/preview`
+- `POST /api/environments/preview`
+- `PATCH /api/environments/:name/status`
 
-| Environment | Purpose                          | Stability | Data                       |
-| ----------- | -------------------------------- | --------- | -------------------------- |
-| DEV         | Development and experimentation  | Low       | Mock data                  |
-| QA          | Automated testing and validation | Medium    | Test datasets              |
-| UAT         | Business validation              | High      | Anonymized production data |
-| PROD        | Live system                      | Very High | Production data            |
+### Pipelines
+- `GET /api/pipelines`
+- `POST /api/pipelines`
 
-Workflow:
+### Test Automation
+- `GET /api/test-automation/runs`
+- `POST /api/test-automation/runs`
 
-```text
-DEV → QA → UAT → PRODUCTION
-```
+### Quality Intelligence
+- `GET /api/quality/dashboard`
+- `POST /api/quality/risk`
 
----
-
-## Preview Environments
-
-The platform automatically creates **temporary environments for Pull Requests**.
-
-Example:
-
-```text
-preview-pr-101
-preview-pr-102
-preview-pr-103
-```
-
-Workflow:
-
-```text
-Pull Request
-      │
-      ▼
-CI/CD Pipeline
-      │
-      ▼
-Create Kubernetes Namespace
-      │
-      ▼
-Deploy Application
-      │
-      ▼
-Run Automated Tests
-      │
-      ▼
-QA Validation
-```
-
-Preview environments are destroyed automatically when the Pull Request is closed.
-
----
-
-## Core Features
-
-- Environment management
-- Automated testing
-- CI/CD pipeline monitoring
-- Release risk analysis
-- Preview environments
-- Observability dashboards
-
----
-
-## Quality Intelligence
-
-The platform includes an **AI-based quality analysis module** that evaluates release risk based on test metrics.
-
-Example output:
-
-```text
-Release Version: 1.2.0
-
-Test Pass Rate: 91%
-Coverage: 82%
-Failed Tests: 3
-
-Release Risk Score: MEDIUM
-```
-
-Risk classification:
-
-```text
-LOW
-MEDIUM
-HIGH
-CRITICAL
-```
-
----
-
-## Metrics Dashboard
-
-Key metrics displayed:
-
-- Test Pass Rate
-- Automation Coverage
-- Defect Density
-- Release Risk Score
-- Build Stability
-
----
-
-## Tech Stack
-
-### Frontend
-
-- Next.js
-- TailwindCSS
-
-### Backend
-
-- Node.js
-- Express
-
-### Testing
-
-- Playwright
-- Cypress
-- k6
-
-### Infrastructure
-
-- Docker
-- Kubernetes
-- Terraform
-
-### CI/CD
-
-- GitHub Actions
-- ArgoCD
-
-### Observability
-
-- Prometheus
-- Grafana
-- Loki
-- Jaeger
-
----
-
-## Repository Structure
-
-```text
-qaops-platform/
-├── backend/
-├── frontend/
-├── services/
-├── tests/
-├── docker/
-├── k8s/
-├── terraform/
-├── monitoring/
-├── dashboards/
-├── scripts/
-├── docs/
-├── .github/workflows/
-├── Makefile
-└── README.md
-```
-
----
-
-## Running the Project Locally
+## Local development
 
 ### Prerequisites
+- Node.js 20+
+- npm
+- Docker / Kubernetes (optional for deployment manifests)
 
-- Docker
-- Kubernetes
-- kubectl
-- Node.js
-
-### Start Development Environment
+### Setup and run
 
 ```bash
 make dev
 ```
 
-### Run Automated Tests
+Then run services in separate terminals:
+
+```bash
+cd backend && npm run dev
+cd frontend && npm run dev
+```
+
+### Run tests
 
 ```bash
 make test
 ```
 
-### Deploy to Kubernetes
+### Validate k8s manifests
 
 ```bash
 make deploy
 ```
 
-### Deploy Production
+## Quality risk scoring
 
-```bash
-make prod
-```
+Risk levels:
 
----
+- LOW
+- MEDIUM
+- HIGH
+- CRITICAL
 
-## CI/CD Pipeline
-
-Pipeline flow:
-
-```text
-Developer Commit
-       │
-       ▼
-Build
-       │
-       ▼
-Unit Tests
-       │
-       ▼
-Security Scan
-       │
-       ▼
-Build Docker Image
-       │
-       ▼
-Push Container Registry
-       │
-       ▼
-Deploy DEV
-       │
-       ▼
-Automated Tests
-       │
-       ▼
-Deploy QA
-       │
-       ▼
-Performance Tests
-       │
-       ▼
-Deploy UAT
-       │
-       ▼
-Manual Approval
-       │
-       ▼
-Deploy Production
-```
-
----
-
-## Observability
-
-Monitoring stack:
-
-```text
-Application
-   │
-   ▼
-Metrics
-   │
-   ▼
-Prometheus
-   │
-   ▼
-Grafana Dashboards
-```
-
-Logs and tracing:
-
-- Loki
-- Jaeger
-
----
-
-## Future Improvements
-
-- AI-powered test failure analysis
-- Automatic regression detection
-- Intelligent release risk prediction
-- Multi-tenant SaaS architecture
-
----
-
-## License
-
-MIT License
-
----
-
-## Author
-
-Ricardo Oliveira  
-QA Engineer | DevOps Enthusiast | Software Quality Advocate
+The score is determined by pass rate, coverage, failed tests, and build stability thresholds.
