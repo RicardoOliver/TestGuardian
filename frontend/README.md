@@ -18,3 +18,6 @@ npm run dev
 
 By default it expects backend API at `http://localhost:4000`.
 Set `NEXT_PUBLIC_API_BASE_URL` to customize.
+
+
+> **Important:** run the app with `npm run dev` (local project Next.js). Do not use a globally installed `next` binary to avoid React/Next runtime mismatches.
