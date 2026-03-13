@@ -330,3 +330,15 @@ MIT License
 
 Ricardo Oliveira  
 QA Engineer | DevOps Enthusiast | Software Quality Advocate
+
+
+## Resolução de conflitos de PR
+
+Se um PR ficar bloqueado por conflitos com `main`, use:
+
+```bash
+./scripts/resolve-pr-conflicts.sh main
+```
+
+O script tenta fazer o merge da base e aplica resolução automática nos arquivos mais recorrentes do projeto; se restarem conflitos, ele lista os arquivos para ajuste manual.
+
