@@ -7,19 +7,19 @@ import {
   assertString
 } from "./validators.js";
 import { AppError } from "./errors.js";
+import { metricsStore } from "./metrics.js";
+import { createMetricsRouter } from "./routes/metrics.js";
 
 export function createApp(store = new PlatformStore()) {
   const app = express();
   app.use(express.json());
 
   app.get("/health", (_req, res) => {
-    res.json({
-      service: "qaops-api",
-      status: "ok",
-      timestamp: new Date().toISOString()
-    });
+    res.json({ status: "ok" });
   });
 
+
+  app.use(createMetricsRouter(metricsStore));
   app.get("/api/environments", (req, res) => {
     const type = req.query.type ? assertString(req.query.type, "type") : undefined;
     res.json({ items: store.listEnvironments({ type }) });
