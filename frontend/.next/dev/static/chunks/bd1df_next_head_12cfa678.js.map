@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Ricardo/Dropbox%20%28Vers%C3%A3o%20anterior%29/My%20PC%20%28LAPTOP-FIRBUB72%29/Desktop/TestGuardianProjeto/TestGuardian/frontend/node_modules/next/head.js"],"sourcesContent":["module.exports = require('./dist/shared/lib/head')\n"],"names":[],"mappings":"AAAA,OAAO,OAAO","ignoreList":[0]}}]
+}

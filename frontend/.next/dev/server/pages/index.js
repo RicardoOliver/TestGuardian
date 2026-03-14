@@ -1,0 +1,8 @@
+var R=require("../chunks/ssr/[turbopack]_runtime.js")("server/pages/index.js")
+R.c("server/chunks/ssr/bd1df_8382616c._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__d07835ef._.js")
+R.c("server/chunks/ssr/_f4f3b247._.js")
+R.c("server/chunks/ssr/[externals]__fa248b9f._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__f6d26a73._.js")
+R.m("[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/node_modules/next/dist/esm/build/templates/pages.js { INNER_PAGE => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/pages/index.js [ssr] (ecmascript)\", INNER_DOCUMENT => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/node_modules/next/document.js [ssr] (ecmascript)\", INNER_APP => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/pages/_app.js [ssr] (ecmascript)\" } [ssr] (ecmascript)")
+module.exports=R.m("[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/node_modules/next/dist/esm/build/templates/pages.js { INNER_PAGE => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/pages/index.js [ssr] (ecmascript)\", INNER_DOCUMENT => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/node_modules/next/document.js [ssr] (ecmascript)\", INNER_APP => \"[project]/Dropbox (Versão anterior)/My PC (LAPTOP-FIRBUB72)/Desktop/TestGuardianProjeto/TestGuardian/frontend/pages/_app.js [ssr] (ecmascript)\" } [ssr] (ecmascript)").exports
